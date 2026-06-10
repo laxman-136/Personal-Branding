@@ -9,7 +9,13 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { BRAND } from "@/lib/data";
 
-const NAV_ITEMS = [
+interface NavItem {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+}
+
+const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Events", href: "/events" },
