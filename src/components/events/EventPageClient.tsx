@@ -1,10 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register ScrollTrigger plugin
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 import {
   ArrowLeft,
   ArrowRight,
@@ -297,6 +305,62 @@ export default function EventPageClient({ event, upcomingEvents, pastWebinars }:
     return () => clearInterval(interval);
   }, [masteryInView, isLayerAutoPlaying]);
 
+  const pageContainerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // 1. Hero Content Entrance
+    gsap.from(".gsap-hero-animate", {
+      opacity: 0,
+      y: 30,
+      duration: 1,
+      stagger: 0.15,
+      ease: "power3.out"
+    });
+
+    // 2. Stepper Console ScrollTrigger
+    gsap.from(".gsap-stepper-node", {
+      scrollTrigger: {
+        trigger: ".gsap-stepper-trigger",
+        start: "top 80%",
+        toggleActions: "play none none none"
+      },
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power2.out"
+    });
+
+    // 3. Curriculum Architecture Workspace ScrollTrigger
+    gsap.from(".gsap-curriculum-animate", {
+      scrollTrigger: {
+        trigger: ".gsap-curriculum-trigger",
+        start: "top 80%",
+        toggleActions: "play none none none"
+      },
+      opacity: 0,
+      y: 30,
+      duration: 0.9,
+      stagger: 0.12,
+      ease: "power3.out"
+    });
+
+    // 4. Attendees Cards Stagger Reveal
+    gsap.from(".gsap-attendee-card", {
+      scrollTrigger: {
+        trigger: ".gsap-attendees-trigger",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      },
+      opacity: 0,
+      scale: 0.95,
+      y: 25,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "back.out(1.2)"
+    });
+  }, { scope: pageContainerRef });
+
   // Mouse tilt states for Hero dashboard mockup
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
@@ -523,7 +587,7 @@ ORDER BY creation_date DESC;`,
   ];
 
   return (
-    <div className="bg-neutral-50 text-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 font-sans transition-colors duration-300">
+    <div ref={pageContainerRef} className="bg-neutral-50 text-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 font-sans transition-colors duration-300">
       
       {/* ── HERO SECTION ─────────────────────────────────────────────── */}
       <section className="relative pt-32 pb-24 overflow-hidden bg-white dark:bg-neutral-950 border-b border-neutral-100 dark:border-neutral-900">
@@ -539,7 +603,7 @@ ORDER BY creation_date DESC;`,
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           
           {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="mb-8">
+          <nav aria-label="Breadcrumb" className="mb-8 gsap-hero-animate">
             <ol className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-400">
               <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
               <li aria-hidden="true" className="text-neutral-300">/</li>
@@ -555,7 +619,7 @@ ORDER BY creation_date DESC;`,
             <div className="lg:col-span-7 space-y-8">
               
               {/* Badges */}
-              <div className="flex flex-wrap gap-2 items-center">
+              <div className="flex flex-wrap gap-2 items-center gsap-hero-animate">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 uppercase tracking-widest text-[10px]">
                   <Zap className="w-3 h-3 text-amber-400" /> {event.type}
                 </span>
@@ -571,7 +635,7 @@ ORDER BY creation_date DESC;`,
               </div>
 
               {/* Title & Subtitle */}
-              <div className="space-y-4">
+              <div className="space-y-4 gsap-hero-animate">
                 <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black text-neutral-900 dark:text-neutral-50 leading-[1.05] tracking-tight uppercase">
                   Master SCM <br />
                   <span className="text-gradient-primary">Procurement</span> <br />
@@ -585,7 +649,7 @@ ORDER BY creation_date DESC;`,
               </div>
 
               {/* Unique Inline Highlight Widget */}
-              <div className="flex items-start gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-150 dark:border-neutral-800 max-w-xl">
+              <div className="flex items-start gap-4 p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-150 dark:border-neutral-800 max-w-xl gsap-hero-animate">
                 <div className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Activity className="w-5 h-5" />
                 </div>
@@ -598,7 +662,7 @@ ORDER BY creation_date DESC;`,
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 items-center">
+              <div className="flex flex-wrap gap-4 items-center gsap-hero-animate">
                 <a
                   href="#registration"
                   className="inline-flex items-center gap-2 bg-primary hover:bg-primary-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 text-sm"
@@ -618,7 +682,7 @@ ORDER BY creation_date DESC;`,
             </div>
 
             {/* Right – Interactive Masterclass Cohort Pass (with 3D mouse-tilt) */}
-            <div className="lg:col-span-5 relative" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+            <div className="lg:col-span-5 relative gsap-hero-animate" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
               
               {/* Outer Glow Halo */}
               <div className="absolute inset-0 bg-primary/10 rounded-3xl pointer-events-none filter blur-2xl transform scale-110" />
@@ -795,10 +859,10 @@ ORDER BY creation_date DESC;`,
 
       {/* ── SCM FUNCTIONAL SANDBOX CONSOLE (STEPPER) ──────────────────── */}
       {processFlow.length > 0 && (
-        <section ref={sandboxRef} className="py-24 bg-white dark:bg-neutral-950 border-b border-neutral-100 dark:border-neutral-900">
+        <section ref={sandboxRef} className="py-24 bg-white dark:bg-neutral-950 border-b border-neutral-100 dark:border-neutral-900 gsap-stepper-trigger">
           <div className="container mx-auto max-w-6xl px-6">
             
-            <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+            <div className="text-center max-w-2xl mx-auto mb-14 space-y-3 gsap-stepper-node">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">SCM Functional Sandbox</span>
               <h2 className="text-3xl md:text-4xl font-display font-black text-neutral-900 dark:text-neutral-50 tracking-tight uppercase">
                 Procure-To-Pay Setup Console
@@ -809,7 +873,7 @@ ORDER BY creation_date DESC;`,
             </div>
 
             {/* Stepper Pipeline Header */}
-            <div className="relative mb-12 max-w-5xl mx-auto">
+            <div className="relative mb-12 max-w-5xl mx-auto gsap-stepper-node">
               {/* Connector line background */}
               <div className="absolute top-[22px] left-[6%] right-[6%] h-0.5 bg-neutral-100 dark:bg-neutral-800 -translate-y-1/2 pointer-events-none hidden md:block" />
               
@@ -853,7 +917,7 @@ ORDER BY creation_date DESC;`,
             <div className="grid lg:grid-cols-12 gap-8 items-stretch">
               
               {/* Left Column - Functional Config Controls */}
-              <div className="lg:col-span-5 p-6 md:p-8 rounded-3xl bg-neutral-50 dark:bg-neutral-900/40 border border-neutral-150 dark:border-neutral-800/80 flex flex-col justify-between">
+              <div className="lg:col-span-5 p-6 md:p-8 rounded-3xl bg-neutral-50 dark:bg-neutral-900/40 border border-neutral-150 dark:border-neutral-800/80 flex flex-col justify-between gsap-stepper-node">
                 <div className="space-y-6">
                   <div className="space-y-1">
                     <span className="text-[9px] font-bold uppercase tracking-widest text-primary font-mono">FSM Task Manager</span>
@@ -1025,7 +1089,7 @@ ORDER BY creation_date DESC;`,
               </div>
 
               {/* Right Column - Live Sandbox Output View */}
-              <div className="lg:col-span-7 p-6 md:p-8 rounded-3xl bg-neutral-900 text-neutral-200 border border-neutral-800 flex flex-col justify-between relative overflow-hidden min-h-[380px]">
+              <div className="lg:col-span-7 p-6 md:p-8 rounded-3xl bg-neutral-900 text-neutral-200 border border-neutral-800 flex flex-col justify-between relative overflow-hidden min-h-[380px] gsap-stepper-node">
                 
                 {/* Console header */}
                 <div className="flex items-center justify-between pb-3 border-b border-neutral-800 relative z-10">
@@ -1574,7 +1638,7 @@ ORDER BY creation_date DESC;`,
 
       {/* ── CASCADING CURRICULUM DECK ────────────────────────────────── */}
       {event.agenda && event.agenda.length > 0 && (
-        <section className="py-24 bg-white dark:bg-neutral-950 border-y border-neutral-100 dark:border-neutral-900 relative overflow-hidden">
+        <section className="py-24 bg-white dark:bg-neutral-950 border-y border-neutral-100 dark:border-neutral-900 relative overflow-hidden gsap-curriculum-trigger">
           {/* Decorative subtle light background ring */}
           <div className="absolute top-1/2 left-3/4 w-[400px] h-[400px] bg-primary/5 rounded-full filter blur-3xl pointer-events-none -translate-y-1/2" />
           
@@ -1584,7 +1648,7 @@ ORDER BY creation_date DESC;`,
               
               {/* Left Column - Headline & Stack Selector */}
               <div className="lg:col-span-5 space-y-6">
-                <div className="space-y-2">
+                <div className="space-y-2 gsap-curriculum-animate">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-primary bg-primary/5 px-2.5 py-1 rounded-full">
                     Webinar Syllabus
                   </span>
@@ -1597,7 +1661,7 @@ ORDER BY creation_date DESC;`,
                 </div>
                 
                 {/* Module selection buttons as high-end catalog list */}
-                <div className="flex flex-col gap-3 pt-2">
+                <div className="flex flex-col gap-3 pt-2 gsap-curriculum-animate">
                   {event.agenda.map((item, idx) => {
                     const isActive = activeTab === idx;
                     const moduleMeta = moduleDetailsData[idx] || { focus: "SCM SETUP", duration: "45 Mins", difficulty: "Core" };
@@ -1655,7 +1719,7 @@ ORDER BY creation_date DESC;`,
               </div>
 
               {/* Right Column - Premium Interactive Workspace */}
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-7 gsap-curriculum-animate">
                 {event.agenda.map((item, idx) => {
                   const isActive = idx === activeTab;
                   if (!isActive) return null;
@@ -1905,7 +1969,7 @@ ORDER BY creation_date DESC;`,
       )}
 
       {/* ── IDEAL ATTENDEES SECTION ─────────────────────────────────── */}
-      <section className="py-24 bg-neutral-50 dark:bg-neutral-950">
+      <section className="py-24 bg-neutral-50 dark:bg-neutral-950 gsap-attendees-trigger">
         <div className="container mx-auto max-w-7xl px-6">
           
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
@@ -1922,7 +1986,7 @@ ORDER BY creation_date DESC;`,
             {WHO_CAN_ATTEND.map((audience, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-3xl hover:shadow-lg transition-all duration-300 group overflow-hidden flex flex-col justify-between"
+                className="bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-3xl hover:shadow-lg transition-all duration-300 group overflow-hidden flex flex-col justify-between gsap-attendee-card"
               >
                 <div className="h-1 bg-gradient-to-r from-primary to-[hsl(178,64%,42%)] w-full" />
                 <div className="p-6 space-y-5">
