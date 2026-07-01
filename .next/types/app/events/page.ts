@@ -1,4 +1,4 @@
-// File: D:\Personal Branding\CEO Brand Website\src\app\events\page.tsx
+// File: D:\Personal-Branding\src\app\events\page.tsx
 import * as entry from '../../../../src/app/events/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
