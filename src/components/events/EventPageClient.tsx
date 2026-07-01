@@ -359,7 +359,15 @@ export default function EventPageClient({ event, upcomingEvents, pastWebinars }:
       stagger: 0.1,
       ease: "back.out(1.2)"
     });
+
+    // Force ScrollTrigger to calculate correct trigger boundaries after initial paint
+    ScrollTrigger.refresh();
   }, { scope: pageContainerRef });
+
+  // Refresh ScrollTrigger when tabs toggle to avoid layout displacement/height changes
+  useEffect(() => {
+    ScrollTrigger.refresh();
+  }, [activeTab, activeSubTab]);
 
   // Mouse tilt states for Hero dashboard mockup
   const [rotateX, setRotateX] = useState(0);
