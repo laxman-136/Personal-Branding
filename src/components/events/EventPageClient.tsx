@@ -308,57 +308,74 @@ export default function EventPageClient({ event, upcomingEvents, pastWebinars }:
   const pageContainerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // 1. Hero Content Entrance
-    gsap.from(".gsap-hero-animate", {
-      opacity: 0,
-      y: 30,
-      duration: 1,
-      stagger: 0.15,
-      ease: "power3.out"
-    });
+    // 1. Hero Content Entrance (on load)
+    gsap.fromTo(".gsap-hero-animate", 
+      { opacity: 0, y: 30, filter: "blur(8px)" },
+      {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 1.2,
+        stagger: 0.1,
+        ease: "power4.out"
+      }
+    );
 
     // 2. Stepper Console ScrollTrigger
-    gsap.from(".gsap-stepper-node", {
-      scrollTrigger: {
-        trigger: ".gsap-stepper-trigger",
-        start: "top 80%",
-        toggleActions: "play none none none"
-      },
-      opacity: 0,
-      y: 20,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power2.out"
-    });
+    gsap.fromTo(".gsap-stepper-node", 
+      { opacity: 0, y: 30, filter: "blur(8px)" },
+      {
+        scrollTrigger: {
+          trigger: ".gsap-stepper-trigger",
+          start: "top 80%",
+          toggleActions: "play none none none"
+        },
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 1,
+        stagger: 0.08,
+        ease: "power3.out"
+      }
+    );
 
     // 3. Curriculum Architecture Workspace ScrollTrigger
-    gsap.from(".gsap-curriculum-animate", {
-      scrollTrigger: {
-        trigger: ".gsap-curriculum-trigger",
-        start: "top 80%",
-        toggleActions: "play none none none"
-      },
-      opacity: 0,
-      y: 30,
-      duration: 0.9,
-      stagger: 0.12,
-      ease: "power3.out"
-    });
+    gsap.fromTo(".gsap-curriculum-animate", 
+      { opacity: 0, y: 40, filter: "blur(10px)", scale: 0.98 },
+      {
+        scrollTrigger: {
+          trigger: ".gsap-curriculum-trigger",
+          start: "top 80%",
+          toggleActions: "play none none none"
+        },
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        scale: 1,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: "power4.out"
+      }
+    );
 
-    // 4. Attendees Cards Stagger Reveal
-    gsap.from(".gsap-attendee-card", {
-      scrollTrigger: {
-        trigger: ".gsap-attendees-trigger",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      },
-      opacity: 0,
-      scale: 0.95,
-      y: 25,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "back.out(1.2)"
-    });
+    // 4. Attendees Cards Stagger Reveal (Stunning de-blur fade-in)
+    gsap.fromTo(".gsap-attendee-card", 
+      { opacity: 0, y: 40, filter: "blur(10px)", scale: 0.96 },
+      {
+        scrollTrigger: {
+          trigger: ".gsap-attendees-trigger",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        },
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        scale: 1,
+        duration: 1,
+        stagger: 0.12,
+        ease: "power4.out"
+      }
+    );
 
     // Force ScrollTrigger to calculate correct trigger boundaries after initial paint
     ScrollTrigger.refresh();
